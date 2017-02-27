@@ -17,13 +17,19 @@ if (window.CS === undefined) { window.CS = {}; }
 
       return (
         <div key={i}
-           style={{ width: '12.5%', height: '12.5%' }}>
+           style={{ width: '12.5%', height: '12.5%' }} onClick={() => this.handleSquareClick(x, y)}>
           <CS.Square black={black}>
             {piece}
           </CS.Square>
         </div>
       );
-  }
+    }
+
+    handleSquareClick(toX, toY) {
+      if (CS.StateController.canMoveKnight(toX, toY)) {
+        CS.StateController.moveKnight(toX, toY);
+      }
+    }
 
     render() {
       const squares = [];
@@ -71,11 +77,27 @@ if (window.CS === undefined) { window.CS = {}; }
   }
 
   window.CS.StateController = {
-    observe: function (receive) {
-      setInterval(() => receive([
-        Math.floor(Math.random() * 8),
-        Math.floor(Math.random() * 8)
-      ]), 500);
+    observe: function (o) {
+      if (observer) {
+        throw new Error('Multiple observers not implemented.');
+      }
+
+      observer = o;
+      emitChange();
+
+    },
+
+    moveKnight: function (toX, toY) {
+      knightPosition = [toX, toY];
+      emitChange();
+    },
+
+    canMoveKnight(toX, toY) {
+      const [x, y] = knightPosition;
+      const dx = toX - x;
+      const dy = toY - y;
+
+      return (Math.abs(dx) === 2 && Math.abs(dy) === 1) || (Math.abs(dx) === 1 && Math.abs(dy) === 2);
     }
 
   }

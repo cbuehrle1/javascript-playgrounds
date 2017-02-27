@@ -17,13 +17,19 @@ if (window.CS === undefined) { window.CS = {}; }
 
       return (
         <div key={i}
-           style={{ width: '12.5%', height: '12.5%' }}>
+           style={{ width: '12.5%', height: '12.5%' }} onClick={() => this.handleSquareClick(x, y)}>
           <CS.Square black={black}>
             {piece}
           </CS.Square>
         </div>
       );
-  }
+    }
+
+    handleSquareClick(toX, toY) {
+      if (CS.StateController.canMoveKnight(toX, toY)) {
+        CS.StateController.moveKnight(toX, toY);
+      }
+    }
 
     render() {
       const squares = [];

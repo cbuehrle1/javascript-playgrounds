@@ -38,6 +38,8 @@ if (window.CS === undefined) {
     _createClass(Board, [{
       key: 'renderSquare',
       value: function renderSquare(i) {
+        var _this2 = this;
+
         var x = i % 8;
         var y = Math.floor(i / 8);
         var black = (x + y) % 2 === 1;
@@ -51,13 +53,22 @@ if (window.CS === undefined) {
         return _react2.default.createElement(
           'div',
           { key: i,
-            style: { width: '12.5%', height: '12.5%' } },
+            style: { width: '12.5%', height: '12.5%' }, onClick: function onClick() {
+              return _this2.handleSquareClick(x, y);
+            } },
           _react2.default.createElement(
             CS.Square,
             { black: black },
             piece
           )
         );
+      }
+    }, {
+      key: 'handleSquareClick',
+      value: function handleSquareClick(toX, toY) {
+        if (CS.StateController.canMoveKnight(toX, toY)) {
+          CS.StateController.moveKnight(toX, toY);
+        }
       }
     }, {
       key: 'render',
@@ -131,12 +142,31 @@ if (window.CS === undefined) {
   }
 
   window.CS.StateController = {
-    observe: function observe(receive) {
-      setInterval(function () {
-        return receive([Math.floor(Math.random() * 8), Math.floor(Math.random() * 8)]);
-      }, 500);
-    }
+    observe: function observe(o) {
+      if (observer) {
+        throw new Error('Multiple observers not implemented.');
+      }
 
+      observer = o;
+      emitChange();
+    },
+
+    moveKnight: function moveKnight(toX, toY) {
+      knightPosition = [toX, toY];
+      emitChange();
+    },
+
+    canMoveKnight: function canMoveKnight(toX, toY) {
+      var _knightPosition = knightPosition,
+          _knightPosition2 = _slicedToArray(_knightPosition, 2),
+          x = _knightPosition2[0],
+          y = _knightPosition2[1];
+
+      var dx = toX - x;
+      var dy = toY - y;
+
+      return Math.abs(dx) === 2 && Math.abs(dy) === 1 || Math.abs(dx) === 1 && Math.abs(dy) === 2;
+    }
   };
 })();
 
