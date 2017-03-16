@@ -8,10 +8,17 @@
     }
 
     componentDidMount() {
+      var me = {lat: 32.9673497, lng: -96.8166474};
+
       var map = new google.maps.Map(this.map, {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 8
+        center: {lat: 32.8203525, lng: -97.0115304},
+        zoom: 10
       });
+      
+      var marker = new google.maps.Marker({
+          position: me,
+          map: map
+        });
 
     }
 
