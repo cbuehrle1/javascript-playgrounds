@@ -2,7 +2,7 @@ if (window.CS === undefined) { window.CS = {}; }
 
 (() => {
 
-  let knightPosition = [0, 0];
+  let knightPosition = [1, 7];
   let observer = null;
 
   function emitChange() {

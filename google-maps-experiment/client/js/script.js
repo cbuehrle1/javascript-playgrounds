@@ -5,6 +5,9 @@
 
     constructor() {
       super()
+
+      //if we had data passed in from another component
+      this.state = { options: GM.SharedData.data }
     }
 
     componentDidMount() {
@@ -14,15 +17,15 @@
         center: {lat: 32.8203525, lng: -97.0115304},
         zoom: 10
       });
-      
+
       var marker = new google.maps.Marker({
           position: me,
           map: map
         });
 
     }
-
     render() {
+
       return <div ref={(map) => { this.map = map }} id="map"></div>;
     }
 

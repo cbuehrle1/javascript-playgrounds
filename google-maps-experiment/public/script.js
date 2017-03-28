@@ -16,7 +16,11 @@ var MapComponent = function (_React$Component) {
   function MapComponent() {
     _classCallCheck(this, MapComponent);
 
-    return _possibleConstructorReturn(this, (MapComponent.__proto__ || Object.getPrototypeOf(MapComponent)).call(this));
+    //if we had data passed in from another component
+    var _this = _possibleConstructorReturn(this, (MapComponent.__proto__ || Object.getPrototypeOf(MapComponent)).call(this));
+
+    _this.state = { options: GM.SharedData.data };
+    return _this;
   }
 
   _createClass(MapComponent, [{

@@ -51,3 +51,7 @@ if (window.CS === undefined) { window.CS = {}; }
 
   CS.Board = Board;
 })()
+
+export DragDropContext(HTML5Backend)(CS.Board);
+export const ItemTypes = {
+  KNIGHT: 'knight' }

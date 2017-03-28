@@ -52,24 +52,52 @@ if (window.CS === undefined) { window.CS = {}; }
   CS.Board = Board;
 })()
 
+export DragDropContext(HTML5Backend)(CS.Board);
+export const ItemTypes = {
+  KNIGHT: 'knight' }
+
 if (window.CS === undefined) { window.CS = {}; }
 
 (() => {
 
-  class Knight extends React.Component {
-    render() {
-      return <span>♘</span>;
+  const knightSource = {
+    beginDrag(props) {
+      return {};
+    }
+  };
+
+  function collect(connect, monitor) {
+    return {
+      connectDragSource: connect.dragSource(),
+      isDragging: monitor.isDragging()
     }
   }
 
+  class Knight extends Component {
+    render() {
+      const { connectDragSource, isDragging } = this.props;
+      return connectDragSource(
+        <div style={{
+          opacity: isDragging ? 0.5 : 1,
+          fontSize: 25,
+          fontWeight: 'bold',
+          cursor: 'move'
+        }}>
+          ♘
+        </div>
+      );
+    }
+  }
   CS.Knight = Knight;
 })()
+
+export DragSource(ItemTypes.KNIGHT, knightSource, collect)(CS.Knight);
 
 if (window.CS === undefined) { window.CS = {}; }
 
 (() => {
 
-  let knightPosition = [0, 0];
+  let knightPosition = [1, 7];
   let observer = null;
 
   function emitChange() {
@@ -128,6 +156,9 @@ if (window.CS === undefined) { window.CS = {}; }
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
 
 var mountNode = document.querySelector('#react-root');
 
