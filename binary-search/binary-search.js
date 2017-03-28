@@ -23,15 +23,17 @@ function binarySearch (input, max) {
 
 // binarySearch (99, 100);
 
-function betterSearch (input, max, min) {
+function betterSearch (input, max) {
+
 
   var high = max;
-  var low = min;
+  var low = 0;
   var guess = high / 2;
+  var i = 0;
 
   while (guess != input) {
 
-    console.log(guess);
+    console.log(i);
 
     if (input > guess) {
       var low = guess;
@@ -39,13 +41,13 @@ function betterSearch (input, max, min) {
     }
     else if (input < guess) {
       var high = guess;
-      var guess = Math.round(((high - low) / 2) - low);
+      var guess = Math.abs(Math.round(((high - low) / 2) - low));
     }
 
-
+    i++;
   }
 
-  console.log('Guessed Correct ' + guess);
+  console.log('search complete');
 }
 
-betterSearch(521, 1000, 0);
+betterSearch(521221212113141, 100000000000000000000);
