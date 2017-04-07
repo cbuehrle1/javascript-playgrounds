@@ -25,7 +25,6 @@ function binarySearch (input, max) {
 
 function betterSearch (input, max) {
 
-
   var high = max;
   var low = 0;
   var guess = high / 2;
@@ -33,7 +32,7 @@ function betterSearch (input, max) {
 
   while (guess != input) {
 
-    console.log(i);
+    console.log('guess: ' + guess);
 
     if (input > guess) {
       var low = guess;
@@ -50,4 +49,4 @@ function betterSearch (input, max) {
   console.log('search complete');
 }
 
-betterSearch(521221212113141, 100000000000000000000);
+betterSearch(3135135135135, 1000000000000000000000);

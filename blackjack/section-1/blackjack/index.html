@@ -1,0 +1,35 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link href="../../lib/mocha.css" rel="stylesheet" />
+  <link href="../../style.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="lab-intro">
+    <header>
+      <h1>JavaScript Labs</h1>
+    </header>
+
+    <div class="intro-content">
+      <p>Can you write the code to count a hand in blackjack?</p>
+    </div>
+  </div>
+  <div id="mocha"></div>
+
+  <script src="../../lib/jquery.js"></script>
+  <script src="../../lib/expect-0-3-1.js"></script>
+  <script src="../../lib/should.js"></script>
+  <script src="../../lib/mocha.js"></script>
+  <script src="../../lib/chai.js"></script>
+
+  <script>mocha.setup('bdd')</script>
+  <script src="blackjack.js"></script>
+  <script src="test.blackjack.js"></script>
+  <script>
+    mocha.checkLeaks();
+    mocha.globals(['jQuery']);
+    mocha.run();
+  </script>
+</body>
+</html>
