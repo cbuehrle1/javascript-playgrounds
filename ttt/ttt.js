@@ -32,6 +32,38 @@ var board = {
   }
 }
 
+function inputValidate (input) {
+
+  var result = false;
+
+  constants.forEach((item) => {
+
+    if (input == item) {
+      result = true;
+    }
+
+  });
+
+  pOne.moves.forEach((item) => {
+
+    if (input == item) {
+      result = false;
+    }
+
+  });
+
+  pTwo.moves.forEach((item) => {
+
+    if (input == item) {
+      result = false;
+    }
+
+  });
+
+  return result;
+
+}
+
 function renderBoard () {
   console.log('| ' + board.rowA.A1 + ' | ' + board.rowA.A2 + ' | ' + board.rowA.A3 + ' |');
   console.log('| ' + board.rowB.B1 + ' | ' + board.rowB.B2 + ' | ' + board.rowB.B3 + ' |');
@@ -44,9 +76,71 @@ function firstBoard () {
   console.log('| C1 | C2 | C3 |');
 }
 
-function moveSubmitted (move, player) {
+function determineIfWinner () {
+  var letterCounter;
+  var numberCounter;
 
-  console.log('MOVE SUBMITTED');
+  pOne.moves.forEach((position, index) => {
+
+    var parsedPosition = position.split('');
+    var row = parsedPosition[0];
+    var col = parsedPosition[1];
+
+    if (index === 0) {
+      letterCounter = row;
+      numberCounter = col;
+    }
+    else {
+      letterCounter = letterCounter + row;
+      numberCounter = numberCounter + col;
+    }
+
+  });
+
+  if (letterCounter[0] === letterCounter[1] && letterCounter[0] === letterCounter[2]) {
+    return 'PLAYER ONE';
+  }
+  else if (numberCounter[0] === numberCounter[1] && numberCounter[0] === numberCounter[2]) {
+    return 'PLAYER ONE';
+  }
+  else {
+    letterCounter;
+    numberCounter;
+  }
+
+  pTwo.moves.forEach((position, index) => {
+
+    var parsedPosition = position.split('');
+    var row = parsedPosition[0];
+    var col = parsedPosition[1];
+
+    if (index === 0) {
+      letterCounter = row;
+      numberCounter = col;
+    }
+    else {
+      letterCounter = letterCounter + row;
+      numberCounter = numberCounter + col;
+    }
+
+  });
+
+  if (letterCounter[0] === letterCounter[1] && letterCounter[0] === letterCounter[2]) {
+    return 'PLAYER TWO';
+  }
+  else if (numberCounter[0] === numberCounter[1] && numberCounter[0] === numberCounter[2]) {
+    return 'PLAYER TWO';
+  }
+  else {
+    letterCounter;
+    numberCounter;
+  }
+
+  return false;
+
+}
+
+function moveSubmitted (move, player) {
 
   var textParse = move.split('');
   var row = textParse[0];
@@ -104,9 +198,29 @@ function whoseTurn (player) {
 
 }
 
+function gameBoardFull () {
+  var counter;
+
+  pOne.moves.forEach((item) => {
+    counter++;
+  });
+
+  pTwo.moves.forEach((item) => {
+    counter++;
+  });
+
+  if (counter == 9) {
+    return true;
+  }
+  else {
+    return false;
+  }
+
+}
+
 console.log('WELCOME TO CHADS TIC TAC TOE');
 console.log('');
-console.log('ENTER THE SPOT TO MOVE, SEE SPOTS BELOW');
+console.log('ENTER THE SPOT TO MOVE, SEE POSITIONS BELOW');
 console.log('');
 firstBoard();
 console.log('');
@@ -118,23 +232,30 @@ process.stdin.on('data', function (text) {
   }
 
   var lines = text.split("\n");
+  var validator = inputValidate(lines[0]);
 
-  constants.forEach((item) => {
+  if (validator) {
 
-    if (item !== lines[0]) {
-      console.log('no match');
+    moveSubmitted(lines[0]);
+    renderBoard();
+    var winner = determineIfWinner();
+    console.log(winner);
+    var catGame = gameBoardFull();
+
+    if (typeof winner == 'string') {
+      done(winner + 'WINS!');
+    }
+    else if (catGame) {
+      done('CAT GAME')
     }
 
-  });
-
-  moveSubmitted(lines[0]);
-  renderBoard();
-  console.log(pOne.moves);
-  console.log(pTwo.moves);
-
+  }
+  else {
+    console.log('BAD TURN. ENTER A POSITION.')
+  }
 });
 
-function done() {
-  console.log('game ended');
+function done(message) {
+  console.log(message);
   process.exit();
 }
