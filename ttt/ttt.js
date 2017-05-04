@@ -77,8 +77,21 @@ function firstBoard () {
 }
 
 function determineIfWinner () {
-  var letterCounter;
-  var numberCounter;
+  var letters;
+  var numbers;
+  var allOne = 0;
+  var answerCounter = {
+    letters: {
+      A: 0,
+      B: 0,
+      C: 0
+    },
+    numbers: {
+      One: 0,
+      Two: 0,
+      Three: 0
+    }
+  }
 
   pOne.moves.forEach((position, index) => {
 
@@ -87,25 +100,79 @@ function determineIfWinner () {
     var col = parsedPosition[1];
 
     if (index === 0) {
-      letterCounter = row;
-      numberCounter = col;
+      letters = row;
+      numbers = col;
     }
     else {
-      letterCounter = letterCounter + row;
-      numberCounter = numberCounter + col;
+      letters = letters + row;
+      numbers = numbers + col;
     }
 
   });
 
-  if (letterCounter[0] === letterCounter[1] && letterCounter[0] === letterCounter[2]) {
-    return 'PLAYER ONE';
+  for (var i = 0; i < letters.length; i++) {
+    if (letters[i] == 'A') {
+      answerCounter.letters.A++;
+    }
+    else if (letters[i] == 'B') {
+      answerCounter.letters.B++;
+    }
+    else {
+      answerCounter.letters.C++;
+    }
   }
-  else if (numberCounter[0] === numberCounter[1] && numberCounter[0] === numberCounter[2]) {
-    return 'PLAYER ONE';
+
+  for (var i = 0; i < numbers.length; i++) {
+    if (numbers[i] == '1') {
+      answerCounter.numbers.One++;
+    }
+    else if (numbers[i] == '2') {
+      answerCounter.numbers.Two++;
+    }
+    else {
+      answerCounter.numbers.Three++;
+    }
   }
-  else {
-    letterCounter;
-    numberCounter;
+
+  for (var key in answerCounter) {
+
+    for (var prop in answerCounter[key]) {
+      if (answerCounter[key][prop] == 1) {
+        allOne++;
+      }
+    }
+
+  }
+
+  for (var key in answerCounter.letters) {
+    if (answerCounter.letters[key] == 3) {
+      return 'PLAYER ONE';
+    }
+  }
+
+  for (var key in answerCounter.numbers) {
+    if (answerCounter.numbers[key] == 3) {
+      return 'PLAYER ONE';
+    }
+    else if (allOne == 6) {
+      return 'PLAYER ONE'
+    }
+  }
+
+  letters;
+  numbers;
+  allOne = 0;
+  answerCounter = {
+    letters: {
+      A: 0,
+      B: 0,
+      C: 0
+    },
+    numbers: {
+      One: 0,
+      Two: 0,
+      Three: 0
+    }
   }
 
   pTwo.moves.forEach((position, index) => {
@@ -115,25 +182,67 @@ function determineIfWinner () {
     var col = parsedPosition[1];
 
     if (index === 0) {
-      letterCounter = row;
-      numberCounter = col;
+      letters = row;
+      numbers = col;
     }
     else {
-      letterCounter = letterCounter + row;
-      numberCounter = numberCounter + col;
+      letters = letters + row;
+      numbers = numbers + col;
     }
 
   });
 
-  if (letterCounter[0] === letterCounter[1] && letterCounter[0] === letterCounter[2]) {
-    return 'PLAYER TWO';
+  for (var i = 0; i < letters.length; i++) {
+    if (letters[i] == 'A') {
+      answerCounter.letters.A++;
+    }
+    else if (letters[i] == 'B') {
+      answerCounter.letters.B++;
+    }
+    else {
+      answerCounter.letters.C++;
+    }
   }
-  else if (numberCounter[0] === numberCounter[1] && numberCounter[0] === numberCounter[2]) {
-    return 'PLAYER TWO';
+
+  for (var i = 0; i < numbers.length; i++) {
+    if (numbers[i] == '1') {
+      answerCounter.numbers.One++;
+    }
+    else if (numbers[i] == '2') {
+      answerCounter.numbers.Two++;
+    }
+    else {
+      answerCounter.numbers.Three++;
+    }
   }
-  else {
-    letterCounter;
-    numberCounter;
+
+  for (var key in answerCounter) {
+
+    for (var prop in answerCounter[key]) {
+      if (answerCounter[key][prop] == 1) {
+        allOne++;
+      }
+    }
+
+  }
+
+
+  for (var key in answerCounter.letters) {
+    if (answerCounter.letters[key] == 3) {
+      console.log(pTwo.moves, ' letters');
+      return 'PLAYER TWO';
+    }
+  }
+
+  for (var key in answerCounter.numbers) {
+    if (answerCounter.numbers[key] == 3) {
+      console.log(pTwo.move, ' numbers');
+      return 'PLAYER TWO';
+    }
+    else if (allOne == 6) {
+      console.log(pTwo.moves, ' 6');
+      return 'PLAYER TWO';
+    }
   }
 
   return false;
@@ -199,7 +308,7 @@ function whoseTurn (player) {
 }
 
 function gameBoardFull () {
-  var counter;
+  var counter = 0;
 
   pOne.moves.forEach((item) => {
     counter++;
@@ -239,11 +348,10 @@ process.stdin.on('data', function (text) {
     moveSubmitted(lines[0]);
     renderBoard();
     var winner = determineIfWinner();
-    console.log(winner);
     var catGame = gameBoardFull();
 
     if (typeof winner == 'string') {
-      done(winner + 'WINS!');
+      done(winner + ' WINS!');
     }
     else if (catGame) {
       done('CAT GAME')
